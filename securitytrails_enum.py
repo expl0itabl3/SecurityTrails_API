@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
+import argparse
 import requests
 
-apikey = "[APIKEY]"
+apikey = "APIKEY"
 headers = {
     "accept": "application/json",
     "apikey": apikey
 }
 
 
-def enum_subdomains():
-    domain = input("Enter domain name: ")
+def enum_subdomains(args):
+    domain = args.domain
     url = f"https://api.securitytrails.com/v1/domain/{domain}/subdomains"
 
     # Parse subdomains
@@ -27,5 +28,10 @@ def enum_subdomains():
     return subdomains
 
 
-if __name__ == '__main__':
-    enum_subdomains()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Enumerates subdomains via the SecurityTrails API")
+    parser.add_argument(
+        "-d", "--domain", help="input domain name, example format: example.com", required=True)
+    args = parser.parse_args()
+    enum_subdomains(args)
